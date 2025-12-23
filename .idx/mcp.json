@@ -7,6 +7,16 @@
         "firebase-tools@latest",
         "experimental:mcp"
       ]
+    },
+    "next": {
+      "command": "npm",
+      "args": [
+        "run",
+        "dev"
+      ],
+      "env": {
+        "PORT": "3000"
+      }
     }
   }
 }

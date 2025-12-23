@@ -1,0 +1,20 @@
+[
+  {
+    "id": "venue_1",
+    "name": "Padel Club London",
+    "location": "London, UK",
+    "courts": 4
+  },
+  {
+    "id": "venue_2",
+    "name": "The Padel Yard",
+    "location": "Manchester, UK",
+    "courts": 6
+  },
+  {
+    "id": "venue_3",
+    "name": "GoPadel Bristol",
+    "location": "Bristol, UK",
+    "courts": 3
+  }
+]
