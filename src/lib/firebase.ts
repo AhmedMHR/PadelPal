@@ -1,10 +1,10 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, initializeFirestore, CACHE_SIZE_UNLIMITED } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getDatabase } from "firebase/database";
 
-// 🟢 Hardcoded Config (Guaranteed to work)
+// 🟢 Hardcoded Config
 const firebaseConfig = {
   apiKey: "AIzaSyCIJ9m5mzTBvl6wM1KBnQA3xLAQ7AVyKEc",
   authDomain: "test-action-a9c21.firebaseapp.com",
@@ -15,12 +15,20 @@ const firebaseConfig = {
   databaseURL: "https://test-action-a9c21.firebaseio.com"
 };
 
-// Initialize Firebase
+// Initialize App
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
-// Exports
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
-export const realtimeDb = getDatabase(app); 
-export default app;
+// 🟢 FIX: Force Long Polling to avoid "Client Offline" errors
+const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true, // <--- THE MAGIC FIX
+  localCache: { 
+    kind: 'persistent',
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED
+  } 
+});
+
+const auth = getAuth(app);
+const storage = getStorage(app);
+const realtimeDb = getDatabase(app); 
+
+export { app, auth, db, storage, realtimeDb };
