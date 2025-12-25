@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation"; 
 import { useAuth } from "@/context/AuthContext";
-import { generateTimeSlots, getBookedSlots, createBooking } from "@/services/bookingService";
+import { generateTimeSlots, getBookedSlots } from "@/services/bookingService";
+import { createBookingAction } from "@/app/actions"; // 👈 Import Server Action
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import Link from "next/link";
@@ -62,8 +63,7 @@ export default function BookVenue() {
     if (!user || !selectedSlot) return;
     setLoading(true);
 
-    try {
-      const docRef = await createBooking({ 
+    const bookingData = { 
         venueId: venueId as string,
         hostId: user.uid,
         courtName: "Court 1",
@@ -72,21 +72,22 @@ export default function BookVenue() {
         type: matchType,
         level: matchLevel,
         pricePerPlayer: venuePrice / 4 
-      });
+    };
 
-      // Redirect Logic
+    const result = await createBookingAction(bookingData);
+
+    if (result.success && result.bookingId) {
       if (matchType === 'open') {
-         router.push(`/match/${docRef.id}`);
+         router.push(`/match/${result.bookingId}`);
       } else {
         alert("Court Booked! 🎾");
         router.push("/dashboard");
       }
-    } catch (e) {
-      console.error(e);
+    } else {
       alert("Failed to book.");
-    } finally {
-      setLoading(false);
-    }
+    } 
+
+    setLoading(false);
   };
 
   return (

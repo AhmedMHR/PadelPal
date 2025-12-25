@@ -1,6 +1,6 @@
 import { db } from "@/lib/firebase";
 import { collection, addDoc, query, where, onSnapshot, doc, deleteDoc, Timestamp } from "firebase/firestore";
-import { createChallengeMatch } from "./bookingService";
+import { createChallengeMatchAction } from "@/app/actions"; //  CORRECT: Import the server action
 
 export interface Notification {
   id?: string;
@@ -29,7 +29,7 @@ export const subscribeToNotifications = (userId: string, callback: (notifs: Noti
   const q = query(
     collection(db, "notifications"),
     where("toUserId", "==", userId),
-    where("status", "==", "pending") // Only show active invites
+    where("status", "==", "pending")
   );
 
   return onSnapshot(q, (snapshot) => {
@@ -41,13 +41,20 @@ export const subscribeToNotifications = (userId: string, callback: (notifs: Noti
 // ✅ Handle Response (Accept/Decline)
 export const respondToInvite = async (notification: Notification, accept: boolean) => {
   if (accept) {
-    // 1. Create the Match
-    const matchId = await createChallengeMatch(notification.fromUserId, notification.toUserId);
+    // 1. Create the Match using the Server Action
+    const result = await createChallengeMatchAction(notification.fromUserId, notification.toUserId);
     
     // 2. Delete the notification (cleanup)
     await deleteDoc(doc(db, "notifications", notification.id!));
     
-    return matchId; // Return ID so we can redirect
+    if (result.success) {
+      return result.matchId; // Return ID so we can redirect
+    } else {
+      // Handle the case where match creation fails
+      console.error("Failed to create challenge match:", result.message);
+      return null;
+    }
+
   } else {
     // Just delete the notification
     await deleteDoc(doc(db, "notifications", notification.id!));

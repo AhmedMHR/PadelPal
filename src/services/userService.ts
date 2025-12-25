@@ -40,39 +40,6 @@ export const getUserProfile = async (user: AuthUser) => {
   }
 };
 
-// Safer Update Function (Fixes the crash)
-export const updateUserStats = async (userId: string, isWinner: boolean) => {
-  const userRef = doc(db, "users", userId);
-  
-  try {
-    await runTransaction(db, async (transaction) => {
-      const userDoc = await transaction.get(userRef);
-
-      if (!userDoc.exists()) {
-        // If the profile doesn't exist, create it with stats from this first match.
-        // We don't have the user's email here, so we set it to null.
-        transaction.set(userRef, {
-          uid: userId,
-          email: null,
-          matchesPlayed: 1,
-          wins: isWinner ? 1 : 0,
-          level: 1.0 + (isWinner ? 0.1 : -0.05), // Start at level 1 and apply delta
-          balance: 2000 // Give them starting balance too
-        });
-      } else {
-        // If the profile exists, just update the stats.
-        transaction.update(userRef, {
-          matchesPlayed: increment(1),
-          wins: isWinner ? increment(1) : increment(0),
-          level: increment(isWinner ? 0.1 : -0.05) 
-        });
-      }
-    });
-  } catch (error) {
-    console.error("Error updating user stats:", error);
-  }
-};
-
 // This function creates a user profile, typically during sign-up.
 export const createUserProfile = async (user: AuthUser) => {
   const userRef = doc(db, "users", user.uid);
