@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PadelPal 🎾
 
-## Getting Started
+**PadelPal** is a modern web application for booking Padel courts, finding match opponents, and tracking your competitive level. Built for the community to make playing Padel easier and more social.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+* **🏆 Social Matchmaking:** Join open matches or host your own.
+* **📅 Real-time Booking:** Browse venues and book courts instantly.
+* **💰 Digital Wallet:** Top up your balance (EGP) to pay for games seamlessly.
+* **📈 Level System:** Your ranking (1.0 - 7.0) updates automatically based on match results.
+* **💬 Match Chat:** Coordinate with players before the game.
+* **🔐 Secure Auth:** Powered by Firebase Authentication.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS & Lucide React
+* **Backend:** Firebase (Firestore, Auth, Storage)
+* **Deployment:** Firebase App Hosting (Gen 2)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ⚙️ Local Development
 
-## Learn More
+1.  **Clone the repo**
+    ```bash
+    git clone [https://github.com/AhmedMHR/PadelPal.git](https://github.com/AhmedMHR/PadelPal.git)
+    cd PadelPal
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3.  **Environment Setup**
+    Create a `.env.local` file with your Firebase credentials:
+    ```env
+    NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID=test-action-a9c21
+    # ... other public keys
+    
+    # Admin Keys (for server actions)
+    FIREBASE_CLIENT_EMAIL=your_service_account_email
+    FIREBASE_PRIVATE_KEY="your_private_key"
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4.  **Run the app**
+    ```bash
+    npm run dev
+    ```
 
-## Deploy on Vercel
+## 📱 Screenshots
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Dashboard | Match Details |
+|-----------|---------------|
+| ![Dashboard](/public/dashboard-preview.png) | ![Match](/public/match-preview.png) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤝 Contributing
+
+:) by **Ahmed M.**
+
